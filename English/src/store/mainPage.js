@@ -5,7 +5,8 @@ const mainPage={
     slideArray:[],
     levelarray:[],
     recordingDestroyed:'', //记录离开首页路由路径
-    recordingScrool:''      //记录单词离开时位置
+    recordingScrool:'',      //记录单词离开时位置
+    levelName:''              //记录页面等级文字
   },
   mutations: {
     assignmentSlideArray(state,e){
@@ -13,6 +14,9 @@ const mainPage={
     },
     assignmentLevel(state,e){
       state.levelarray=e;
+    },
+    levelName(state,e){
+      state.levelName=e;
     },
     recordingDestroyed(state,e){
       state.recordingDestroyed=e;
@@ -26,14 +30,14 @@ const mainPage={
       try {
         let data=await fetchPost('/index')
         commit('assignmentSlideArray',data)
-      }
-      catch(e){
+      }catch(e){
         Toast('错误');
       }
     },
     async assignmentLevel({commit},el){
-      let data=await fetchPost(el)
+      let data=await fetchPost(el.to)
       commit('assignmentLevel',data)
+      commit('levelName',el.level)
     }
   },
   getters: {
@@ -42,6 +46,9 @@ const mainPage={
     },
     getlevelArray(state){
       return state.levelarray;
+    },
+    getLevelName(state){
+      return state.levelName;
     },
     getrecordingDestroyed(state){
       return state.recordingDestroyed;
